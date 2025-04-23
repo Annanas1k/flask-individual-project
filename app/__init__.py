@@ -1,6 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text
 
 
 db = SQLAlchemy()
@@ -13,7 +12,7 @@ def create_app():
 
     db.init_app(app)
 
-
+    from .models.models import Students
     from .student_routes import student
     app.register_blueprint(student)
 
@@ -21,19 +20,5 @@ def create_app():
     return app
 
 
-#
-# @app.route('/test')
-# def test_db_connection():
-#     try:
-#         result = db.session.execute(text('SELECT * FROM students'))
-#
-#         rows = result.fetchall()
-#         output = ""
-#         for row in rows:
-#             output += f"\n|{str(row.nume)} - {row.prenume}|"
-#         return output
-#     except Exception as e:
-#         return f'Eroare la conectarea la baza de date: {str(e)}'
-#
-#
+
 
