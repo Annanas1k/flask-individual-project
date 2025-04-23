@@ -1,12 +1,13 @@
 from datetime import timedelta
 
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 db = SQLAlchemy()
+
 
 
 def create_app():
@@ -22,6 +23,10 @@ def create_app():
     from .models.models import Students
     from .student_routes import student
     app.register_blueprint(student)
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template("404.html"), 404
 
 
     return app
