@@ -12,6 +12,18 @@
 
     <div class="card shadow p-4" style="width: 100%; max-width: 400px; left: 100px; top: 100px;">
         <h3 class="text-center mb-4">Autentificare Student</h3>
+    <!-- Afișare mesaje flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div>
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
 
         <!-- Formular -->
         <form method="POST" action="{{url_for('student.login')}}">

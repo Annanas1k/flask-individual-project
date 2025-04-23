@@ -1,7 +1,5 @@
-from flask import Blueprint, render_template, url_for, request, redirect
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Blueprint, render_template, url_for, request, redirect, session, flash
 from .models.models import Students
-from sqlalchemy import text
 
 from . import db
 student = Blueprint('student', __name__)
@@ -13,17 +11,38 @@ def login():
         email = request.form.get("email")
 
         if not email:
-            return "Email este oblicatoriu", 400
+            flash("Email-ul este obligatoriu", "error")
 
         student = Students.query.filter_by(email=email).first()
         if student:
-            return f"Salut {student.nume} {student.prenume}", 200
+            session['student_id'] = student.id
+            session.permanent = True
+            return redirect(url_for("student.dashboard", id=student.id), 301)
         else:
-            return "Nu sa gasit asa email!", 404
+            flash("Stundentul nu a fost gasit", "error")
+            return redirect(url_for("student.login"), 301)
 
     return render_template("student_login.html")
 
 
+@student.route('/dashboard/student_id=<int:id>', methods=['GET','POST'])
+def dashboard(id):
+    if 'student_id' not in session:
+        return redirect(url_for('student.login'))
+
+    student = Students.query.get(session['student_id'])
+
+    if not student:
+        return f"Nu sa gasit asa student", 404
+
+    return render_template("student_dashboard.html", student=student)
+
+
+
+@student.route('/logout')
+def logout():
+    session.pop('student_id', None)
+    return redirect(url_for('student.login'))
 #
 # @student.route('/test')
 # def test_db_connection():
