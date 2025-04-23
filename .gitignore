@@ -29,10 +29,6 @@ Thumbs.db
 *.swp
 *.swo
 
-# Flatpak/JetBrains temporary
-/app/
-.extra/
-
 # Cache
 *.egg-info/
 dist/
