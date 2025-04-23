@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+venv/
+*.sqlite3
+instance/
+
+# PyCharm
+.idea/
+
+# VSCode (dacă folosești)
+.vscode/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Flask specific
+*.db
+.env*
+*.bak
+*.swp
+*.swo
+
+# Flatpak/JetBrains temporary
+/app/
+.extra/
+
+# Cache
+*.egg-info/
+dist/
+build/
+.cache/
