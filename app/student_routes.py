@@ -1,11 +1,13 @@
-from flask import Blueprint, render_template, url_for, request, redirect, session, flash
-from .models.models import Students
+import time
+from time import sleep
 
-from . import db
+from flask import Blueprint, render_template, url_for, request, redirect, session, flash
+from .models.models import *
+
 student = Blueprint('student', __name__)
 
 @student.route('/', methods=['GET','POST'])
-@student.route('/login', methods=['GET','POST'])
+@student.route('/login/student', methods=['GET','POST'])
 def login():
     if request.method == "POST":
         email = request.form.get("email")
@@ -17,6 +19,7 @@ def login():
         if student:
             session['student_id'] = student.id
             session.permanent = True
+            #flash("succesfuly!", "success")
             return redirect(url_for("student.dashboard", id=student.id), 301)
         else:
             flash("Stundentul nu a fost gasit", "error")
@@ -39,7 +42,7 @@ def dashboard(id):
 
 
 
-@student.route('/logout')
+@student.route('/logout/student')
 def logout():
     session.pop('student_id', None)
     return redirect(url_for('student.login'))

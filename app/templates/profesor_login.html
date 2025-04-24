@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Autentificare Student{% endblock %}
+{% block title %}Autentificare Profesor {% endblock %}
 
 {% block content %}
     <style>
@@ -23,11 +23,11 @@
     <div class="col-md-6 left-pane d-flex flex-column justify-content-start">
         <div class="mb-4 d-flex gap-2">
             <a href="#" class="btn btn-primary">Admin</a>
-            <a href="{{url_for('profesor.login')}}" class="btn btn-primary">Profesor</a>
+            <a href="{{url_for('student.login')}}" class="btn btn-primary">Student</a>
         </div>
 
         <div class="card shadow p-4 mt-4" style="max-width: 400px;">
-            <h3 class="text-center mb-4">Autentificare Student</h3>
+            <h3 class="text-center mb-4">Autentificare Profesor</h3>
 
             <!-- Afișare mesaje flash -->
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -43,10 +43,12 @@
             {% endwith %}
 
             <!-- Formular -->
-            <form method="POST" action="{{ url_for('student.login') }}">
+            <form method="POST" action="{{ url_for('profesor.login') }}">
                 <div class="mb-3">
-                    <label for="email" class="form-label">E-mail:</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <label for="login" class="form-label">Login:</label>
+                    <input type="text" class="form-control" id="login" name="login" >
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" >
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">Autentificare</button>
@@ -56,10 +58,9 @@
 
     <!-- Dreapta -->
     <div class="col-md-6 right-pane p-0">
-        <img src="{{ url_for('static', filename='images/student.png') }}" alt="Student Imagine">
+        <img src="{{ url_for('static', filename='images/porofesor.jpg') }}" alt="Student Imagine">
     </div>
 </div>
-
 
 
 

@@ -19,7 +19,7 @@ class Profesor(db.Model):
     nume = db.Column(db.String(20), nullable=False)
     prenume = db.Column(db.String(20), nullable=False)
     login = db.Column(db.String(20), nullable=False, unique=True)
-    parola = db.Column(db.String(128), nullable=False)
+    parola = db.Column(db.String(255), nullable=False)
     disciplina = db.Column(db.String(20), nullable=False)
 
     def __repr__(self):
