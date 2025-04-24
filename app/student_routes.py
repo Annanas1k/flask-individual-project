@@ -31,6 +31,7 @@ def login():
 @student.route('/dashboard/student_id=<int:id>', methods=['GET','POST'])
 def dashboard(id):
     if 'student_id' not in session:
+        flash("Sesiunea a expirat! Te rugăm să te loghezi din nou.", "error")
         return redirect(url_for('student.login'))
 
     student = Students.query.get(session['student_id'])

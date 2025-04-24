@@ -36,6 +36,7 @@ def login():
 @profesor.route('/dashboard/profesor=<string:login>', methods=['GET', 'POST'])
 def dashboard(login):
     if "profesor_login" not in session:
+        flash("Sesiunea a expirat! Te rugăm să te loghezi din nou.", "error")
         return redirect(url_for('profesor.login'))
 
     profesor = Profesor.query.filter_by(login=login).first()
