@@ -43,6 +43,11 @@ def dashboard(id):
 def logout():
     session.pop('student_id', None)
     return redirect(url_for('student.login'))
+
+
+
+
+
 #
 # @student.route('/test')
 # def test_db_connection():
