@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Profesor Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Dashboard Profesor - Înregistrare Absențe</h1>
+
+    <!-- Informații despre profesor -->
+    <div class="alert alert-info">
+        <h4><strong>Profesor:</strong> {{ profesor.nume }} {{ profesor.prenume }}</h4>
+        <p><strong>Disciplina:</strong> {{ disciplina.nume_disciplina }}</p>
+        <a href="{{ url_for('profesor.logout') }}" class="btn btn-danger">Deconectare</a>
+    </div>
+
+    <!-- Formular de filtrare grupă -->
+    <form method="GET" action="{{ url_for('profesor.dashboard', login=profesor.login) }}">
+        <div class="mb-4">
+            <label for="grupa" class="form-label"><strong>Selectează grupa:</strong></label>
+            <div class="input-group">
+                <select class="form-select" id="grupa" name="grupa" required>
+                    <option value="">-- Alege grupa --</option>
+                    <option value="A1" {% if grupa_selectata == 'A1' %}selected{% endif %}>A1</option>
+                    <option value="B1" {% if grupa_selectata == 'B1' %}selected{% endif %}>B1</option>
+                    <option value="C1" {% if grupa_selectata == 'C1' %}selected{% endif %}>C1</option>
+                    <option value="A2" {% if grupa_selectata == 'A2' %}selected{% endif %}>A2</option>
+                    <option value="B2" {% if grupa_selectata == 'B2' %}selected{% endif %}>B2</option>
+                </select>
+                <button type="submit" class="btn btn-warning">Filtrează</button>
+            </div>
+        </div>
+    </form>
+
+    {% if grupa_selectata %}
+    <!-- Formularul pentru înregistrarea absențelor -->
+    <form method="POST" action="{{ url_for('profesor.dashboard', login=profesor.login, grupa=grupa_selectata) }}">
+        <!-- Selectarea datei -->
+        <div class="mb-3">
+            <label for="data_absenta" class="form-label"><strong>Selectează data absenței:</strong></label>
+            <input type="date" name="data_absenta" id="data_absenta" class="form-control" required>
+        </div>
+
+        <!-- Lista de studenți cu opțiuni pentru absență -->
+        <h3>Studenți:</h3>
+        <div class="list-group">
+            {% for student in studenti %}
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <label class="fw-bold">{{ student.nume }} {{ student.prenume }}</label>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <div class="form-check me-3">
+                        <input type="checkbox" name="absenta_{{ student.id }}" value="1" class="form-check-input">
+                    </div>
+
+                    <div class="form-check me-3">
+                        <input type="radio" name="motivata_{{ student.id }}" value="motivata" class="form-check-input">
+                        <label class="form-check-label">Motivată</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="motivata_{{ student.id }}" value="nemotivata" checked class="form-check-input">
+                        <label class="form-check-label">Nemotivată</label>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Înregistrează absențele</button>
+    </form>
+    {% endif %}
+
+    <!-- Mesaje de succes sau eroare -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="mt-3">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+</div>
+{% endblock %}

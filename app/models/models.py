@@ -43,6 +43,8 @@ class Absenta(db.Model):
     data = db.Column(db.Date, nullable=False)
     motivat = db.Column(db.Boolean, nullable=False)
 
+    disciplina = db.relationship('Disciplina', backref='absente')
+
     def __repr__(self):
         return f'<Absenta {self.student_id} {self.profesor_id}>'
 

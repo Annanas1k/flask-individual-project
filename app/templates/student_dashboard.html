@@ -4,69 +4,102 @@
 
 {% block content %}
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .card {
-            margin-top: 20px;
-        }
-        .container {
-            max-width: 1200px;
-        }
-    </style>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .card {
+        margin-top: 20px;
+    }
+    .container {
+        max-width: 1200px;
+    }
+</style>
 
-
-    <!-- Main content -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Bine ai venit, {{ student.nume }} {{ student.prenume }}</h2>
-            </div>
+<!-- Main content -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-between align-items-center mt-3">
+            <h2>Bine ai venit, {{ student.nume }} {{ student.prenume }}</h2>
+            <a href="{{ url_for('student.logout') }}" class="btn btn-danger">Deconectare</a>
         </div>
-
-        <!-- Dashboard Cards -->
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Absențe</h5>
-                        <p class="card-text">Numărul total de absențe: {{ student.nr_absentes }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Specialitate</h5>
-                        <p class="card-text">{{ student.specialitate }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Grupa</h5>
-                        <p class="card-text">{{ student.grupa }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Email</h5>
-                        <p class="card-text">{{ student.email }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-<a href="{{ url_for('student.logout') }}" class="btn btn-danger">Deconectare</a>
     </div>
 
+    <!-- Dashboard Cards -->
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card text-bg-warning">
+                <div class="card-body">
+                    <h5 class="card-title">Absențe totale</h5>
+                    <p class="card-text fs-5 fw-bold">{{ total_absente }}</p>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-md-3">
+            <div class="card text-bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">Specialitate</h5>
+                    <p class="card-text">{{ student.specialitate }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Grupa</h5>
+                    <p class="card-text">{{ student.grupa }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Email</h5>
+                    <p class="card-text">{{ student.email }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Tabel absențe pe disciplină -->
+<div class="row mt-5">
+    <div class="col-md-12">
+        <h3>Absențele tale</h3>
+
+        {% if absente_pe_disciplina %}
+            {% for denumire_disciplina, absente in absente_pe_disciplina.items() %}
+                <h4 class="mt-4">{{ denumire_disciplina }}</h4>
+                <table class="table table-striped table-bordered mt-2">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Data</th>
+                            <th>Motiv</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for absenta in absente %}
+                            <tr>
+                                <td>{{ absenta.data.strftime('%d.%m.%Y') }}</td>
+                                <td>
+                                    {% if absenta.motivat %}
+                                        M
+                                    {% else %}
+                                        A
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">Nu există absențe înregistrate.</p>
+        {% endif %}
+    </div>
+</div>
+
+</div>
 
 {% endblock %}
-

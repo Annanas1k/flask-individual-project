@@ -1,7 +1,10 @@
 import time
+from collections import defaultdict
 from time import sleep
 
 from flask import Blueprint, render_template, url_for, request, redirect, session, flash
+from sqlalchemy.orm import joinedload
+
 from .models.models import *
 
 student = Blueprint('student', __name__)
@@ -37,11 +40,29 @@ def dashboard(id):
     student = Students.query.get(session['student_id'])
 
     if not student:
-        return f"Nu sa gasit asa student", 404
+        flash("Studentul nu a fost găsit!", "error")
+        return redirect(url_for('student.login'))
 
-    return render_template("student_dashboard.html", student=student)
+    absente = (
+        Absenta.query
+        .options(joinedload(Absenta.disciplina))
+        .filter_by(student_id=student.id)
+        .order_by(Absenta.data.desc())
+        .all()
+    )
 
+    total_absente = len(absente)
 
+    absente_pe_disciplina = defaultdict(list)
+    for absenta in absente:
+        absente_pe_disciplina[absenta.disciplina.nume_disciplina].append(absenta)
+
+    return render_template(
+        "student_dashboard.html",
+        student=student,
+        absente_pe_disciplina=absente_pe_disciplina,
+        total_absente=total_absente
+    )
 
 @student.route('/logout/student')
 def logout():
