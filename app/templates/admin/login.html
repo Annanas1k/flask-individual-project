@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block title %}{{ super() }} - Admin Login{% endblock %}
+
+{% block content %}
+<style>
+    .vh-100 {
+        height: 100vh;
+    }
+    .center-pane {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f8f9fa;
+    }
+    .card {
+        width: 100%;
+        max-width: 400px;
+    }
+</style>
+
+<div class="container-fluid center-pane">
+    <div class="card shadow p-4">
+        <div class="mb-3">
+            <a href="{{ url_for('student.login') }}" class="btn btn-secondary">&larr; Înapoi</a>
+        </div>
+
+        <h3 class="text-center mb-4">Autentificare Admin</h3>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div>
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('admin.login') }}">
+            <div class="mb-3">
+                <label for="login" class="form-label">Login:</label>
+                <input type="text" class="form-control" id="login" name="login" required>
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Autentificare</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
