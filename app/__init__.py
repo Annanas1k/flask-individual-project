@@ -22,6 +22,9 @@ def create_app():
 
     db.init_app(app)
 
+    from .admin_routes import admin
+    app.register_blueprint(admin)
+
     from .models.models import Students
     from .student_routes import student
     app.register_blueprint(student)
