@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request, flash, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
@@ -35,6 +35,13 @@ def create_app():
     from .models.models import Profesor
     from .profesor_routes import profesor
     app.register_blueprint(profesor)
+
+    # @app.before_request
+    # def before_request():
+    #     if "student_id" not in session and request.endpoint not in ['student.login']:
+    #         flash("Sesiunea a expirat! Te rugăm să te loghezi din nou.", "error")
+    #         return redirect(url_for('student.login'))
+    #     return None
 
     @app.errorhandler(404)
     def page_not_found(e):

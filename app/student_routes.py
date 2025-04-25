@@ -6,6 +6,14 @@ from .models.models import *
 
 student = Blueprint('student', __name__)
 
+@student.before_request
+def before_request():
+    if "student_id" not in session and request.endpoint not in ['student.login']:
+        flash("Sesiunea a expirat! Te rugăm să te loghezi din nou.", "error")
+        return redirect(url_for('student.login'))
+    return None
+
+
 @student.route('/', methods=['GET','POST'])
 @student.route('/login/student', methods=['GET','POST'])
 def login():
@@ -38,9 +46,6 @@ def dashboard(id):
     Displays the student dashboard with their absences grouped by subject.
     If the student is not found or the session has expired, they are redirected to the login page.
     """
-    if 'student_id' not in session:
-        flash("Sesiunea a expirat! Te rugăm să te loghezi din nou.", "error")
-        return redirect(url_for('student.login'))
 
     student = Students.query.get(session['student_id'])
 

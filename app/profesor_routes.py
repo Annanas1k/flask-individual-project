@@ -5,6 +5,13 @@ from .models.models import *
 
 profesor = Blueprint('profesor', __name__)
 
+@profesor.before_request
+def before_request():
+    if "profesor_login" not in session and request.endpoint not in ['profesor.login']:
+        flash("Sesiunea a expirat! Te rugăm să te loghezi din nou.", "error")
+        return redirect(url_for('profesor.login'))
+    return None
+
 @profesor.route('/login/profesor', methods=['GET', 'POST'])
 def login():
     """
@@ -37,9 +44,6 @@ def dashboard(login):
     Displays the professor's dashboard with the list of students in the selected group and allows marking absences.
     If the session has expired or the professor is not found, it redirects to the login page.
     """
-    if "profesor_login" not in session:
-        flash("Sesiunea a expirat! Te rugăm să te loghezi din nou.", "error")
-        return redirect(url_for('profesor.login'))
 
     profesor = Profesor.query.filter_by(login=session['profesor_login']).first()
     if not profesor:

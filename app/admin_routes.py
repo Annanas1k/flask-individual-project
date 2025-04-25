@@ -15,6 +15,16 @@ ADMIN_LOGIN = os.getenv('ADMIN_LOGIN')
 ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
 
 
+@admin.before_request
+def before_request():
+    """
+    Displays the admin dashboard, redirects to login if session has expired.
+    """
+    if "admin" not in session and request.endpoint not in ['admin.login']:
+        flash("Sesiunea a expirat! Te rugăm să te loghezi din nou.", "error")
+        return redirect(url_for('admin.login'))
+    return None
+
 @admin.route('/login', methods=['GET', 'POST'])
 def login():
     """
@@ -39,13 +49,6 @@ def login():
 @admin.route('/', methods=['GET', 'POST'])
 @admin.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-    """
-    Displays the admin dashboard, redirects to login if session has expired.
-    """
-    if "admin" not in session:
-        flash("Sesiunea a expirat! Te rugam sa te loghezi din nou", "error")
-        return redirect(url_for('admin.login'))
-
     return render_template("admin/dashboard.html")
 
 @admin.route('/students', methods=['GET', 'POST'])
@@ -53,9 +56,6 @@ def students():
     """
     Displays the list of students and allows adding, editing, and deleting them.
     """
-    if "admin" not in session:
-        flash("Sesiunea a expirat! Te rugam sa te loghezi din nou", "error")
-        return redirect(url_for('admin.login'))
 
     if request.method == 'POST':
         if "add_student" in request.form:
@@ -116,9 +116,6 @@ def profesori():
     """
     Displays the list of professors and allows adding, editing, and deleting them.
     """
-    if "admin" not in session:
-        flash("Sesiunea a expirat! Te rugam sa te loghezi din nou", "error")
-        return redirect(url_for('admin.login'))
 
     if request.method == 'POST':
         if "add_profesor" in request.form:
