@@ -7,6 +7,10 @@ profesor = Blueprint('profesor', __name__)
 
 @profesor.route('/login/profesor', methods=['GET', 'POST'])
 def login():
+    """
+    Handles the login process for the professor. It checks if the provided login and password are correct
+    and starts a session for the professor on successful login.
+    """
     if request.method == 'POST':
         login = request.form['login']
         password = request.form['password']
@@ -27,10 +31,12 @@ def login():
     return render_template("profesor_login.html")
 
 
-
-
 @profesor.route('/dashboard/profesor=<login>', methods=['GET', 'POST'])
 def dashboard(login):
+    """
+    Displays the professor's dashboard with the list of students in the selected group and allows marking absences.
+    If the session has expired or the professor is not found, it redirects to the login page.
+    """
     if "profesor_login" not in session:
         flash("Sesiunea a expirat! Te rugăm să te loghezi din nou.", "error")
         return redirect(url_for('profesor.login'))
@@ -81,5 +87,8 @@ def dashboard(login):
 
 @profesor.route('/logout/profesor')
 def logout():
+    """
+    Logs out the professor by clearing the session.
+    """
     session.pop('profesor_login', None)
     return redirect(url_for('profesor.login'))

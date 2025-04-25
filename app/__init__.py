@@ -10,9 +10,11 @@ from werkzeug.security import generate_password_hash
 load_dotenv()
 db = SQLAlchemy()
 
-
-
 def create_app():
+    """
+    Initializes and configures the Flask application.
+    Registers routes and error handlers.
+    """
     app = Flask(__name__)
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
@@ -22,6 +24,7 @@ def create_app():
 
     db.init_app(app)
 
+    # Registering blueprints for admin, student, and profesor routes
     from .admin_routes import admin
     app.register_blueprint(admin)
 
@@ -35,27 +38,27 @@ def create_app():
 
     @app.errorhandler(404)
     def page_not_found(e):
+        """
+        Handles 404 errors and renders the custom 404 page.
+        """
         return render_template("404.html"), 404
-
 
     @app.route('/cc')
     def cc():
+        """
+        Hashes all passwords for professors and updates them in the database.
+        """
         profesori = Profesor.query.all()
 
         for profesor in profesori:
             if profesor.parola:
-                # Hash-uiește parola folosind generate_password_hash (care folosește PBKDF2 cu salt)
+                # Hashing password using PBKDF2
                 hashed_password = generate_password_hash(profesor.parola)
 
-                # Actualizează parola în baza de date cu hash-ul generat
+                # Updating password in the database
                 profesor.parola = hashed_password
                 db.session.commit()
 
-        return jsonify({"message": "Parolele au fost hashate și actualizate cu succes!"}), 200
-
+        return jsonify({"message": "Passwords have been successfully hashed and updated!"}), 200
 
     return app
-
-
-
-

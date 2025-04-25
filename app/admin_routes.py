@@ -17,6 +17,9 @@ ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
 
 @admin.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    Logs in the admin user based on the login and password.
+    """
     if request.method == 'POST':
         login = request.form['login']
         password = request.form['password']
@@ -31,21 +34,25 @@ def login():
         else:
             flash("Datele sunt gresite!!", "error")
 
-
     return render_template("admin/login.html")
 
 @admin.route('/', methods=['GET', 'POST'])
 @admin.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
+    """
+    Displays the admin dashboard, redirects to login if session has expired.
+    """
     if "admin" not in session:
         flash("Sesiunea a expirat! Te rugam sa te loghezi din nou", "error")
         return redirect(url_for('admin.login'))
-
 
     return render_template("admin/dashboard.html")
 
 @admin.route('/students', methods=['GET', 'POST'])
 def students():
+    """
+    Displays the list of students and allows adding, editing, and deleting them.
+    """
     if "admin" not in session:
         flash("Sesiunea a expirat! Te rugam sa te loghezi din nou", "error")
         return redirect(url_for('admin.login'))
@@ -101,16 +108,14 @@ def students():
             return redirect(url_for('admin.students'))
 
 
-
-
-
-
-
     students = Students.query.all()
     return render_template("admin/students.html", students=students)
 
 @admin.route('/profesori', methods=['GET', 'POST'])
 def profesori():
+    """
+    Displays the list of professors and allows adding, editing, and deleting them.
+    """
     if "admin" not in session:
         flash("Sesiunea a expirat! Te rugam sa te loghezi din nou", "error")
         return redirect(url_for('admin.login'))
@@ -170,11 +175,16 @@ def profesori():
 
 @admin.route('/discipline', methods=['GET', 'POST'])
 def discipline():
+    """
+    Displays information about available courses.
+    """
     return render_template("admin/discipline.html")
 
 @admin.route('/absente', methods=['GET', 'POST'])
 def absente():
-    # Creăm un grafic cu statistici pe discipline
+    """
+    Displays a chart of absences per course.
+    """
     absente_pe_disciplina = db.session.query(
         Disciplina.nume_disciplina.label('disciplina_nume'),
         func.count(Absenta.id).label('total')
@@ -183,14 +193,12 @@ def absente():
     discipline = [absenta.disciplina_nume for absenta in absente_pe_disciplina]
     total_abente = [absenta.total for absenta in absente_pe_disciplina]
 
-    # Generare grafic
     fig, ax = plt.subplots()
     ax.bar(discipline, total_abente)
     ax.set_xlabel('Discipline')
     ax.set_ylabel('Număr Absențe')
     ax.set_title('Statistici Absențe pe Discipline')
 
-    # Salvăm graficul într-un obiect BytesIO pentru a-l trimite în base64
     img = io.BytesIO()
     fig.savefig(img, format='png')
     img.seek(0)
@@ -200,13 +208,18 @@ def absente():
 
 @admin.route('/logout')
 def logout():
+    """
+    Logs out the admin user and redirects to the login page.
+    """
     session.pop("admin", None)
     return redirect(url_for('admin.login'))
 
 @admin.route('/hashpass', methods=['GET', 'POST'])
 def hashpass():
+    """
+    Generates and returns a hashed password for the string "admin".
+    """
     parola = "admin"
     hash_parola = generate_password_hash(parola)
     return jsonify({"message": "Parolele au fost hashate și actualizate cu succes!",
                     "hashed_password:": hash_parola}), 200
-

@@ -9,6 +9,10 @@ student = Blueprint('student', __name__)
 @student.route('/', methods=['GET','POST'])
 @student.route('/login/student', methods=['GET','POST'])
 def login():
+    """
+    Handles the student login process. If the email is found, a session is created and the student is redirected to the dashboard.
+    If the email is not found, an error message is shown.
+    """
     if request.method == "POST":
         email = request.form.get("email")
 
@@ -30,6 +34,10 @@ def login():
 
 @student.route('/dashboard/student_id=<int:id>', methods=['GET','POST'])
 def dashboard(id):
+    """
+    Displays the student dashboard with their absences grouped by subject.
+    If the student is not found or the session has expired, they are redirected to the login page.
+    """
     if 'student_id' not in session:
         flash("Sesiunea a expirat! Te rugăm să te loghezi din nou.", "error")
         return redirect(url_for('student.login'))
@@ -63,24 +71,8 @@ def dashboard(id):
 
 @student.route('/logout/student')
 def logout():
+    """
+    Logs out the student by clearing the session.
+    """
     session.pop('student_id', None)
     return redirect(url_for('student.login'))
-
-
-
-
-
-#
-# @student.route('/test')
-# def test_db_connection():
-#     try:
-#         result = db.session.execute(text('SELECT * FROM students'))
-#
-#         rows = result.fetchall()
-#         output = ""
-#         for row in rows:
-#             output += f"\n|{str(row.nume)} - {row.prenume}|"
-#         return output
-#     except Exception as e:
-#         return f'Eroare la conectarea la baza de date: {str(e)}'
-#
