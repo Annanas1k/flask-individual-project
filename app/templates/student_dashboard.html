@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Student - Dashboard{% endblock %}
+{% block title %} {{super()}} - St Dashboard{% endblock %}
 
 {% block content %}
 
@@ -20,7 +20,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 d-flex justify-content-between align-items-center mt-3">
-            <h2>Bine ai venit, {{ student.nume }} {{ student.prenume }}</h2>
+            <h2>Bine ai venit,<span style="font-weight: bold"> {{ student.nume }} {{ student.prenume }} {{ student.patronimic }} </span></h2>
             <a href="{{ url_for('student.logout') }}" class="btn btn-danger">Deconectare</a>
         </div>
     </div>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="col-md-3">
-            <div class="card text-bg-info">
+            <div class="card text-bg-light">
                 <div class="card-body">
                     <h5 class="card-title">Specialitate</h5>
                     <p class="card-text">{{ student.specialitate }}</p>
@@ -70,7 +70,7 @@
 
         {% if absente_pe_disciplina %}
             {% for denumire_disciplina, absente in absente_pe_disciplina.items() %}
-                <h4 class="mt-4">{{ denumire_disciplina }}</h4>
+                <h4 class="mt-4 text-bg-warning" style="background-color: #f8d7da; padding: 10px; border-radius: 5px; width: fit-content">{{ denumire_disciplina }}</h4>
                 <table class="table table-striped table-bordered mt-2">
                     <thead class="table-dark">
                         <tr>

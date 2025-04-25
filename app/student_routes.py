@@ -1,7 +1,4 @@
-import time
 from collections import defaultdict
-from time import sleep
-
 from flask import Blueprint, render_template, url_for, request, redirect, session, flash
 from sqlalchemy.orm import joinedload
 
