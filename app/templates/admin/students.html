@@ -1,6 +1,141 @@
 {% extends 'admin/base.html' %}
+
 {% block title %}Admin - Studenti{% endblock %}
+
 {% block content %}
-    <h2 class="mt-4">Studenti</h2>
-    <!-- aici lista sau formularul -->
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-9">
+
+                <!-- Tabelul cu lista studenților -->
+                <h3 class="text-center">Lista Studenților</h3>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addStudentModal">Adaugă Student</button>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nume</th>
+                            <th>Prenume</th>
+                            <th>Patronimic</th>
+                            <th>Email</th>
+                            <th>Specialitate</th>
+                            <th>Grupa</th>
+                            <th>Acțiuni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                            <tr>
+                                <td>{{ student.id }}</td>
+                                <td>{{ student.nume }}</td>
+                                <td>{{ student.prenume }}</td>
+                                <td>{{ student.patronimic }}</td>
+                                <td>{{ student.email }}</td>
+                                <td>{{ student.specialitate }}</td>
+                                <td>{{ student.grupa }}</td>
+                                <td>
+                                    <!-- Buton pentru editare -->
+                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ student.id }}">Editează</button>
+                                    <form method="POST" style="display:inline;" class="d-inline">
+                                        <input type="hidden" name="student_id" value="{{ student.id }}">
+                                        <button type="submit" class="btn btn-danger btn-sm" name="delete_student">Șterge</button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                            <!-- Modal pentru editare -->
+                            <div class="modal fade" id="editModal{{ student.id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form method="POST">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel">Editează Student</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="nume" class="form-label">Nume</label>
+                                                    <input type="text" class="form-control" name="nume" value="{{ student.nume }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="prenume" class="form-label">Prenume</label>
+                                                    <input type="text" class="form-control" name="prenume" value="{{ student.prenume }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="patronimic" class="form-label">Patronimic</label>
+                                                    <input type="text" class="form-control" name="patronimic" value="{{ student.patronimic }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">E-mail</label>
+                                                    <input type="email" class="form-control" name="email" value="{{ student.email }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="specialitate" class="form-label">Specialitate</label>
+                                                    <input type="text" class="form-control" name="specialitate" value="{{ student.specialitate }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="grupa" class="form-label">Grupa</label>
+                                                    <input type="text" class="form-control" name="grupa" value="{{ student.grupa }}" required>
+                                                </div>
+                                                <input type="hidden" name="student_id" value="{{ student.id }}">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Închide</button>
+                                                <button type="submit" class="btn btn-primary" name="edit_student">Salvează modificările</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal pentru adăugare student -->
+        <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addStudentModalLabel">Adaugă Student</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="nume" class="form-label">Nume</label>
+                                <input type="text" class="form-control" name="nume" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="prenume" class="form-label">Prenume</label>
+                                <input type="text" class="form-control" name="prenume" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="patronimic" class="form-label">Patronimic</label>
+                                <input type="text" class="form-control" name="patronimic" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">E-mail</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="specialitate" class="form-label">Specialitate</label>
+                                <input type="text" class="form-control" name="specialitate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="grupa" class="form-label">Grupa</label>
+                                <input type="text" class="form-control" name="grupa" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Închide</button>
+                            <button type="submit" class="btn btn-primary" name="add_student">Adaugă Student</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

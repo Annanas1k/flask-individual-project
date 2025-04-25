@@ -1,6 +1,57 @@
 {% extends 'admin/base.html' %}
-{% block title %}Admin - Dashboard{% endblock %}
+{% block title %}Dashboard Admin{% endblock %}
 {% block content %}
-    <h2 class="mt-4">Dashboard</h2>
-    <!-- aici lista sau formularul -->
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Bine ai venit în Dashboard-ul Admin</h2>
+
+        <p class="lead text-muted">
+            Acesta este panoul principal al aplicației, care îți permite să administrezi utilizatorii, absențele și să vizualizezi statistici detaliate despre absențele studenților.
+            Mai jos sunt descrise principalele funcționalități pe care le ai la dispoziție:
+        </p>
+
+        <hr>
+
+        <h3 class="mt-5">Funcționalități pentru Admin:</h3>
+        <ul class="list-group mb-4">
+            <li class="list-group-item">
+                <strong>Gestionare Utilizatori:</strong> Adminul poate crea, edita și șterge conturi pentru profesori și studenți. Astfel, poate gestiona utilizatorii aplicației.
+            </li>
+            <li class="list-group-item">
+                <strong>Crearea de Grafice Statistice:</strong> Adminul poate crea grafice detaliate despre absențele studenților la discipline, pe baza datelor stocate în aplicație. Aceste grafice sunt generate folosind Python și oferă informații vizuale despre absenteismul fiecărei discipline.
+            </li>
+            <li class="list-group-item">
+                <strong>Vizualizarea Absențelor:</strong> Adminul poate vizualiza absențele studenților, inclusiv datele și motivele acestora. De asemenea, poate analiza statisticile vizuale sub formă de grafice pentru o mai bună înțelegere a absențelor pe discipline.
+            </li>
+        </ul>
+
+        <h3>Despre Aplicație:</h3>
+        <p class="lead text-muted">
+            Această aplicație funcționează ca un catalog online pentru absențele studenților. Studenții se pot loga cu adresa de email pentru a vizualiza absențele lor, inclusiv datele și motivele acestora.
+        </p>
+
+        <h4>Despre Utilizatori:</h4>
+        <p class="text-muted">
+            - Studenții se pot loga prin email și pot vedea absențele lor totale și pe fiecare dată în parte. Fiecare absență este justificată cu un motiv și este marcată corespunzător.
+        </p>
+
+        <p class="text-muted">
+            - Profesorii au un cont securizat și pot adăuga absențe pentru studenți la disciplinele lor. De asemenea, acestea sunt salvate în baza de date, iar toate datele sunt securizate.
+        </p>
+
+        <p class="text-muted">
+            - Adminul are control total asupra aplicației, având abilitatea de a crea, modifica și șterge conturi pentru profesori și studenți. De asemenea, adminul poate crea grafice pentru a analiza absențele studenților.
+        </p>
+
+        <hr>
+
+        <h4>Tehnologii Folosite:</h4>
+        <p class="text-muted">
+            Această aplicație este construită folosind <strong>Python</strong> pentru generarea graficelor statistice, iar baza de date folosită este <strong>PostgreSQL</strong>.
+        </p>
+
+        <h4>Informații Suplimentare:</h4>
+        <p class="text-muted">
+            Dacă întâmpini orice problemă sau ai nevoie de ajutor, nu ezita să ne contactezi. Suntem aici să îți oferim suport!
+        </p>
+    </div>
 {% endblock %}

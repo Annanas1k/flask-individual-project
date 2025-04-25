@@ -1,6 +1,42 @@
 {% extends 'admin/base.html' %}
-{% block title %}Admin - Absente{% endblock %}
+{% block title %}Admin - Absențe{% endblock %}
 {% block content %}
-    <h2 class="mt-4">Absente</h2>
-    <!-- aici lista sau formularul -->
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Detalii Absențe pentru Studenți</h2>
+
+        <p class="lead text-muted">
+            În această secțiune veți putea vizualiza statisticile detaliate privind absențele studenților la diferite discipline.
+            Graficul de mai jos arată distribuția absențelor pe discipline, iar mai jos veți găsi detalii suplimentare despre
+            absențele fiecărui student în parte.
+        </p>
+
+        <hr>
+
+        <h3 class="mt-5 text-center">Statistici Absențe pe Discipline</h3>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="text-center">
+                    <img src="data:image/png;base64,{{ img_data }}" alt="Statistici Absențe pe Discipline" class="img-fluid" style="max-width: 100%; height: auto;">
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <p class="lead text-muted" style="margin-top: 40px">
+                    Graficul de mai sus reprezintă numărul de absențe înregistrate pentru fiecare disciplină în parte.
+                    Aceste informații sunt utile pentru a înțelege care sunt disciplinele cu cele mai multe absențe și unde ar putea fi necesare măsuri suplimentare pentru a îmbunătăți participarea studenților.
+                </p>
+
+                <p class="lead text-muted">
+                    De asemenea, este important să observăm tendințele generale ale absențelor, iar acest grafic poate ajuta la luarea unor decizii fundamentate în ceea ce privește managementul cursurilor.
+                    Absențele mari la anumite discipline pot fi indicatori ai unor probleme de implicare sau poate fi necesar să oferim mai mult suport studenților în acele domenii.
+                </p>
+
+                <hr>
+
+
+            </div>
+        </div>
+
+    </div>
 {% endblock %}

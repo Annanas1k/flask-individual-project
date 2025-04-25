@@ -3,49 +3,53 @@ from app import db
 class Students(db.Model):
     __tablename__ = 'students'
     id = db.Column(db.Integer, primary_key=True)
-    nume = db.Column(db.String(20), nullable=False)
-    prenume = db.Column(db.String(20), nullable=False)
-    patronimic = db.Column(db.String(20), nullable=False)
-    email = db.Column(db.String(80), nullable=False, unique=True)
-    specialitate = db.Column(db.String(80), nullable=False)
-    grupa = db.Column(db.String(10), nullable=False)
+    nume = db.Column(db.String(50), nullable=False)
+    prenume = db.Column(db.String(50), nullable=False)
+    patronimic = db.Column(db.String(50), nullable=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    specialitate = db.Column(db.String(100), nullable=False)
+    grupa = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
-        return f'<Student {self.nume} {self.prenume}>'
+        return '<Students %r>' % self.id
+
 
 class Profesor(db.Model):
     __tablename__ = 'profesori'
     id = db.Column(db.Integer, primary_key=True)
-    nume = db.Column(db.String(20), nullable=False)
-    prenume = db.Column(db.String(20), nullable=False)
-    login = db.Column(db.String(20), nullable=False, unique=True)
-    parola = db.Column(db.String(255), nullable=False)
-    disciplina = db.Column(db.String(20), nullable=False)
+    nume = db.Column(db.String(50), nullable=False)
+    prenume = db.Column(db.String(50), nullable=False)
+    login = db.Column(db.String(100), unique=True, nullable=False)
+    parola = db.Column(db.String(200), nullable=False)
+    disciplina = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
-        return f'<Profesor {self.nume} {self.prenume}>'
+        return '<Profesor %r>' % self.id
+
+
+
 
 class Disciplina(db.Model):
     __tablename__ = 'discipline'
     id = db.Column(db.Integer, primary_key=True)
-    nume_disciplina = db.Column(db.String(20), nullable=False)
+    nume_disciplina = db.Column(db.String(100), nullable=False, unique=True)
 
     def __repr__(self):
-        return f'<Disciplina {self.nume_disciplina}>'
-
+        return '<Disciplina %r>' % self.id
 
 class Absenta(db.Model):
     __tablename__ = 'absente'
     id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
-    profesor_id = db.Column(db.Integer, db.ForeignKey('profesori.id'), nullable=False)
-    disciplina_id = db.Column(db.Integer, db.ForeignKey('discipline.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id', ondelete='CASCADE'), nullable=False)
+    profesor_id = db.Column(db.Integer, db.ForeignKey('profesori.id', ondelete='CASCADE'), nullable=False)
+    disciplina_id = db.Column(db.Integer, db.ForeignKey('discipline.id', ondelete='CASCADE'), nullable=False)
     data = db.Column(db.Date, nullable=False)
     motivat = db.Column(db.Boolean, nullable=False)
 
-    disciplina = db.relationship('Disciplina', backref='absente')
-
     def __repr__(self):
-        return f'<Absenta {self.student_id} {self.profesor_id}>'
+        return '<Absenta %r>' % self.id
 
-
+    # Relații cu backref
+    student = db.relationship('Students', backref=db.backref('absente', cascade='all, delete-orphan'))
+    profesor = db.relationship('Profesor', backref=db.backref('absente', cascade='all, delete-orphan'))
+    disciplina = db.relationship('Disciplina', backref=db.backref('absente', cascade='all, delete-orphan'))

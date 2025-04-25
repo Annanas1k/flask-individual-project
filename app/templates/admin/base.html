@@ -54,8 +54,35 @@
         {% endif %}
     {% endwith %}
 
+
+     <style>
+        .footer-info {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 6px 12px;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+}
+.footer-info:hover {
+    background: rgba(240, 240, 240, 0.95);
+}
+.footer-info i {
+    font-size: 1rem;
+}
+
+    </style>
+    <!-- Footer permanent -->
+<div class="footer-info position-fixed bottom-0 start-0 m-3 text-muted small d-flex align-items-center gap-2">
+    <span>&copy; Pavlovschii Radu</span> |
+    <a href="https://github.com/Annanas1k/flask-individual-project.git" class="text-decoration-none text-dark" target="_blank">
+        <i class="fab fa-github me-1"></i> GitHub-Project
+    </a>
+</div>
+
     {% block content %}{% endblock %}
 </div>
+
 
 </body>
 </html>
